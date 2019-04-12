@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tools &#8212; FFPyPlayer 4.2.0.dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Images" href="pic.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tools">
+<span id="tools-api"></span><h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-ffpyplayer.tools">
+<span id="ffpyplayer-tools"></span><h2><a class="reference internal" href="#module-ffpyplayer.tools" title="ffpyplayer.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ffpyplayer.tools</span></code></a><a class="headerlink" href="#module-ffpyplayer.tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ffmpeg-tools">
+<h3>FFmpeg tools<a class="headerlink" href="#ffmpeg-tools" title="Permalink to this headline">¶</a></h3>
+<p>Module for manipulating and finding information of FFmpeg formats, codecs,
+devices, pixel formats and more.</p>
+<dl class="function">
+<dt id="ffpyplayer.tools.initialize_sdl_aud">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">initialize_sdl_aud</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.initialize_sdl_aud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes sdl audio subsystem. Must be called before audio can be used.
+It is automatically called by the modules that use SDL audio.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.set_log_callback">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">set_log_callback</code><span class="sig-paren">(</span><em>callback=None</em>, <em>logger=None</em>, <em>int default_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.set_log_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a callback to be used by ffmpeg when emitting logs.
+This function is thread safe.</p>
+<p>See also <a class="reference internal" href="#ffpyplayer.tools.set_loglevel" title="ffpyplayer.tools.set_loglevel"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_loglevel()</span></code></a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><cite>callback</cite>: callable or None</dt><dd><p>A function which will be called with strings to be printed. It takes
+two parameters: <code class="docutils literal notranslate"><span class="pre">message</span></code> and <code class="docutils literal notranslate"><span class="pre">level</span></code>. <code class="docutils literal notranslate"><span class="pre">message</span></code> is the string
+to be printed. <code class="docutils literal notranslate"><span class="pre">level</span></code> is the log level of the string and is one
+of the keys of the <a class="reference internal" href="#ffpyplayer.tools.loglevels" title="ffpyplayer.tools.loglevels"><code class="xref py py-attr docutils literal notranslate"><span class="pre">loglevels</span></code></a> dict. If <code class="docutils literal notranslate"><span class="pre">callback</span></code> and <code class="docutils literal notranslate"><span class="pre">logger</span></code>
+are None, the default ffmpeg log callback will be set, which prints to stderr.
+Defaults to None.</p>
+</dd>
+<dt><cite>logger</cite>: a python logger object or None</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">callback</span></code> is None and this is not None, this logger object’s
+<code class="docutils literal notranslate"><span class="pre">critical</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>, <code class="docutils literal notranslate"><span class="pre">warning</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code>, <code class="docutils literal notranslate"><span class="pre">debug</span></code>, and <code class="docutils literal notranslate"><span class="pre">trace</span></code>
+methods will be called directly to forward ffmpeg’s log outputs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the logger doesn’t have a trace method, the trace output will be
+redirected to debug. However, the trace level outputs a lot of logs.</p>
+</div>
+</dd>
+<dt><cite>default_only</cite>: bool</dt><dd><p>If True, when <code class="docutils literal notranslate"><span class="pre">callback</span></code> or <code class="docutils literal notranslate"><span class="pre">logger</span></code> are not <code class="docutils literal notranslate"><span class="pre">None</span></code>, they
+will only be set if a callback or logger has not already been set.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The previous callback set (None, if it has not been set).</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ffpyplayer.tools</span> <span class="k">import</span> <span class="n">set_log_callback</span><span class="p">,</span> <span class="n">loglevels</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loglevel_emit</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span> <span class="c1"># This and worse errors will be emitted.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">log_callback</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">loglevels</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">loglevels</span><span class="p">[</span><span class="n">loglevel_emit</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="nb">print</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">set_log_callback</span><span class="p">(</span><span class="n">log_callback</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">set_log_callback</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_log_callback">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_log_callback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_log_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the last log callback set, or None if it has not been set.
+See <a class="reference internal" href="#ffpyplayer.tools.set_log_callback" title="ffpyplayer.tools.set_log_callback"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_log_callback()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.set_loglevel">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">set_loglevel</code><span class="sig-paren">(</span><em>loglevel</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.set_loglevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This sets the global FFmpeg log level. less important log levels are filtered
+and not passsed on to the logger or callback set by <a class="reference internal" href="#ffpyplayer.tools.set_log_callback" title="ffpyplayer.tools.set_log_callback"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_log_callback()</span></code></a>.
+It also set the loglevel of FFmpeg if not callback or logger is set.</p>
+<p>The global log level, if not set, defaults to <code class="docutils literal notranslate"><span class="pre">'warning'</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>loglevel</cite>: str</dt><dd><p>The log level. Can be one of the keys of <a class="reference internal" href="#ffpyplayer.tools.loglevels" title="ffpyplayer.tools.loglevels"><code class="xref py py-attr docutils literal notranslate"><span class="pre">loglevels</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_loglevel">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_loglevel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_loglevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the log level set with <a class="reference internal" href="#ffpyplayer.tools.set_loglevel" title="ffpyplayer.tools.set_loglevel"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_loglevel()</span></code></a>, or the default level if not
+set. It is one of the keys of <a class="reference internal" href="#ffpyplayer.tools.loglevels" title="ffpyplayer.tools.loglevels"><code class="xref py py-attr docutils literal notranslate"><span class="pre">loglevels</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_codecs">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_codecs</code><span class="sig-paren">(</span><em>int encode=False</em>, <em>int decode=False</em>, <em>int video=False</em>, <em>int audio=False</em>, <em>int data=False</em>, <em>int subtitle=False</em>, <em>int attachment=False</em>, <em>other=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_codecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of codecs (e.g. h264) that is available by ffpyplayer for
+encoding or decoding and matches the media types, e.g. video or audio.</p>
+<p>The parameters determine which codecs is included in the result. The parameters
+all default to False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>encode</cite>: bool</dt><dd><p>If True, includes the encoding codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>decode</cite>: bool</dt><dd><p>If True, includes the decoding codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>video</cite>: bool</dt><dd><p>If True, includes the video codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>audio</cite>: bool</dt><dd><p>If True, includes the audio codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>data</cite>: bool</dt><dd><p>If True, includes the (continuous) side data codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>subtitle</cite>: bool</dt><dd><p>If True, includes the subtitle codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>attachment</cite>: bool</dt><dd><p>If True, includes the (sparse) data attachment codecs in the result. Defaults to False.</p>
+</dd>
+<dt><cite>other</cite>: bool</dt><dd><p>If True, returns all the codec media types.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A sorted list of the matching codec names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_fmts">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_fmts</code><span class="sig-paren">(</span><em>int input=False</em>, <em>int output=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_fmts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the formats available in FFmpeg.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>input</cite>: bool</dt><dd><p>If True, also includes input formats in the result. Defaults to False</p>
+</dd>
+<dt><cite>output</cite>: bool</dt><dd><p>If True, also includes output formats in the result. Defaults to False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A 3-tuple of 3 lists, <code class="docutils literal notranslate"><span class="pre">formats</span></code>, <code class="docutils literal notranslate"><span class="pre">full_names</span></code>, and <code class="docutils literal notranslate"><span class="pre">extensions</span></code>.
+Each of the three lists are of identical length.</p>
+<dl class="simple">
+<dt><cite>formats</cite>: list</dt><dd><p>A list of the names of the formats.</p>
+</dd>
+<dt><cite>full_names</cite>: list</dt><dd><p>A list of the corresponding human readable names for each of the
+formats. Can be the empty string if none is available.</p>
+</dd>
+<dt><cite>extensions</cite>: list</dt><dd><p>A list of the extensions associated with the corresponding formats.
+Each item is a (possibly empty) list of extensions names.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_format_codec">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_format_codec</code><span class="sig-paren">(</span><em>filename=None</em>, <em>fmt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_format_codec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the best codec associated with the file format. The format
+can be provided using either <code class="docutils literal notranslate"><span class="pre">filename</span></code> or <code class="docutils literal notranslate"><span class="pre">fmt</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>filename</cite>: str or None</dt><dd><p>The output filename. If provided, the extension of the filename
+is used to guess the format.</p>
+</dd>
+<dt><cite>fmt</cite>: str or None.</dt><dd><p>The format to use. Can be one of <a class="reference internal" href="#ffpyplayer.tools.formats_out" title="ffpyplayer.tools.formats_out"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ffpyplayer.tools.formats_out</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>str:</dt><dd><p>The name from <a class="reference internal" href="#ffpyplayer.tools.codecs_enc" title="ffpyplayer.tools.codecs_enc"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ffpyplayer.tools.codecs_enc</span></code></a>
+of the best codec that can be used with this format.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_format_codecs</span><span class="p">(</span><span class="s1">&#39;test.png&#39;</span><span class="p">)</span>
+<span class="go">&#39;mjpeg&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_format_codecs</span><span class="p">(</span><span class="s1">&#39;test.jpg&#39;</span><span class="p">)</span>
+<span class="go">&#39;mjpeg&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_format_codecs</span><span class="p">(</span><span class="s1">&#39;test.mkv&#39;</span><span class="p">)</span>
+<span class="go">&#39;libx264&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_format_codecs</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;h264&#39;</span><span class="p">)</span>
+<span class="go">&#39;libx264&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_supported_framerates">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_supported_framerates</code><span class="sig-paren">(</span><em>codec_name</em>, <em>rate=()</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_supported_framerates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the supported frame rates for encoding codecs. If a desired rate is
+provided, it also returns the closest valid rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>codec_name</cite>: str</dt><dd><p>The name of a encoding codec.</p>
+</dd>
+<dt><cite>rate</cite>: 2-tuple of ints, or empty tuple.</dt><dd><p>If provided, a 2-tuple where the first element is the numerator,
+and the second the denominator of the frame rate we wish to use. E.g.
+(2997, 100) means a frame rate of 29.97.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>(list of 2-tuples, or empty list):</dt><dd><p>If there are no restrictions on the frame rate (i.e. all rates are valid)
+it returns a empty list, otherwise it returns a list with the valid
+frame rates. If <cite>rate</cite> is provided and there are restrictions on the frame
+rates, the closest frame rate is the zero’th element in the list.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">get_supported_framerates</span><span class="p">(</span><span class="s1">&#39;mpeg1video&#39;</span><span class="p">)</span>
+<span class="go">[(24000, 1001), (24, 1), (25, 1), (30000, 1001), (30, 1), (50, 1),</span>
+<span class="go">(60000, 1001), (60, 1), (15, 1), (5, 1), (10, 1), (12, 1), (15, 1)]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">get_supported_framerates</span><span class="p">(</span><span class="s1">&#39;mpeg1video&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">2997</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="go">[(30000, 1001), (24000, 1001), (24, 1), (25, 1), (30, 1), (50, 1),</span>
+<span class="go">(60000, 1001), (60, 1), (15, 1), (5, 1), (10, 1), (12, 1), (15, 1)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_supported_pixfmts">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_supported_pixfmts</code><span class="sig-paren">(</span><em>codec_name</em>, <em>pix_fmt=''</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_supported_pixfmts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the supported pixel formats for encoding codecs. If a desired format
+is provided, it also returns the closest format (i.e. the format with minimum
+conversion loss).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>codec_name</cite>: str</dt><dd><p>The name of a encoding codec.</p>
+</dd>
+<dt><cite>pix_fmt</cite>: str</dt><dd><p>If not empty, the name of a pixel format we wish to use with this codec,
+e.g. ‘rgb24’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>(list of pixel formats, or empty list):</dt><dd><p>If there are no restrictions on the pixel formats (i.e. all the formats
+are valid) it returns a empty list, otherwise it returns a list with the
+valid formats. If pix_fmt is not empty and there are restrictions to the
+formats, the closest format which results in the minimum loss when converting
+will be returned as the zero’th element in the list.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">get_supported_pixfmts</span><span class="p">(</span><span class="s1">&#39;ffv1&#39;</span><span class="p">)</span>
+<span class="go">[&#39;yuv420p&#39;, &#39;yuva420p&#39;, &#39;yuva422p&#39;, &#39;yuv444p&#39;, &#39;yuva444p&#39;, &#39;yuv440p&#39;, ...</span>
+<span class="go">&#39;gray16le&#39;, &#39;gray&#39;, &#39;gbrp9le&#39;, &#39;gbrp10le&#39;, &#39;gbrp12le&#39;, &#39;gbrp14le&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">get_supported_pixfmts</span><span class="p">(</span><span class="s1">&#39;ffv1&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="go">[&#39;gray&#39;, &#39;yuv420p&#39;, &#39;yuva420p&#39;, &#39;yuva422p&#39;, &#39;yuv444p&#39;, &#39;yuva444p&#39;, ...</span>
+<span class="go">&#39;gray16le&#39;, &#39;gbrp9le&#39;, &#39;gbrp10le&#39;, &#39;gbrp12le&#39;, &#39;gbrp14le&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.get_best_pix_fmt">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">get_best_pix_fmt</code><span class="sig-paren">(</span><em>pix_fmt</em>, <em>pix_fmts</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.get_best_pix_fmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the best pixel format with the least conversion loss from the
+original pixel format, given a list of potential pixel formats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>pix_fmt</cite>: str</dt><dd><p>The name of a original pixel format.</p>
+</dd>
+<dt><cite>pix_fmts</cite>: list-type of strings</dt><dd><p>A list of possible pixel formats from which the best will be chosen.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The pixel format with the least conversion loss.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The returned pixel format seems to be somewhat sensitive to the order
+of the input pixel formats. Higher quality pixel formats should therefore
+be at the beginning of the list.</p>
+</div>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_best_pix_fmt</span><span class="p">(</span><span class="s1">&#39;yuv420p&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;rgb24&#39;</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;yuv444p&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">])</span>
+<span class="go">&#39;rgb24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_best_pix_fmt</span><span class="p">(</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;rgb24&#39;</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;yuv444p&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">])</span>
+<span class="go">&#39;gray&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_best_pix_fmt</span><span class="p">(</span><span class="s1">&#39;rgb8&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;rgb24&#39;</span><span class="p">,</span> <span class="s1">&#39;yuv420p&#39;</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;yuv444p&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">])</span>
+<span class="go">&#39;rgb24&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.emit_library_info">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">emit_library_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.emit_library_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints to the ffmpeg log all the ffmpeg library’s versions and configure
+options.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.list_dshow_devices">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">list_dshow_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.list_dshow_devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the dshow devices available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p><cite>3-tuple</cite>: A 3-tuple, of (<cite>video</cite>, <cite>audio</cite>, <cite>names</cite>)</p>
+<blockquote>
+<div><dl class="simple">
+<dt><cite>video</cite>: dict</dt><dd><p>A dict of all the direct show <strong>video</strong> devices. The keys
+of the dict are the unique names of the available direct show devices. The values
+are a list of the available configurations for that device. Each
+element in the list has the following format:
+<code class="docutils literal notranslate"><span class="pre">(pix_fmt,</span> <span class="pre">codec_fmt,</span> <span class="pre">(frame_width,</span> <span class="pre">frame_height),</span> <span class="pre">(min_framerate,</span> <span class="pre">max_framerate))</span></code></p>
+</dd>
+<dt><cite>audio</cite>: dict</dt><dd><p>A dict of all the direct show <strong>audio</strong> devices. The keys
+of the dict are the unique names of the available direct show devices. The values
+are a list of the available configurations for that device. Each
+element in the list has the following format:
+<code class="docutils literal notranslate"><span class="pre">((min_num_channels,</span> <span class="pre">min_num_channels),</span> <span class="pre">(min_bits,</span> <span class="pre">max_bits),</span> <span class="pre">(min_rate,</span> <span class="pre">max_rate))</span></code>.</p>
+</dd>
+<dt><cite>names</cite>: dict</dt><dd><p>A dict mapping the unique names of the video and audio devices to
+a more human friendly (possibly non-unique) name. Either of these
+names can be used when opening the device. However, if using the non-unique
+name, it’s not guarenteed which of the devices sharing the name will be opened.</p>
+</dd>
+</dl>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ffpyplayer.player</span> <span class="kn">import</span> <span class="n">MediaPlayer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ffpyplayer.tools</span> <span class="kn">import</span> <span class="n">list_dshow_devices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">weakref</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dev</span> <span class="o">=</span> <span class="n">list_dshow_devices</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dev</span>
+<span class="go">({&#39;@device_pnp_...223196\global&#39;: [(&#39;bgr24&#39;, &#39;&#39;, (160, 120), (5, 30)),</span>
+<span class="go">(&#39;bgr24&#39;, &#39;&#39;, (176, 144), (5, 30)), (&#39;bgr24&#39;, &#39;&#39;, (320, 176), (5, 30)),</span>
+<span class="go">(&#39;bgr24&#39;, &#39;&#39;, (320, 240), (5, 30)), (&#39;bgr24&#39;, &#39;&#39;, (352, 288), (5, 30)),</span>
+<span class="gp">...</span>
+<span class="go">(&#39;yuv420p&#39;, &#39;&#39;, (320, 240), (5, 30)), (&#39;yuv420p&#39;, &#39;&#39;, (352, 288), (5, 30))],</span>
+<span class="go">&#39;@device_pnp_...223196\global&#39;: [(&#39;bgr24&#39;, &#39;&#39;, (160, 120), (30, 30)),</span>
+<span class="gp">...</span>
+<span class="go">(&#39;yuyv422&#39;, &#39;&#39;, (352, 288), (30, 30)),</span>
+<span class="go">(&#39;yuyv422&#39;, &#39;&#39;, (640, 480), (30, 30))]},</span>
+<span class="go">{&#39;@device_cm_...2- HD Webcam C615)&#39;: [((1, 2), (8, 16), (11025, 44100))],</span>
+<span class="go">&#39;@device_cm_...HD Webcam C615)&#39;: [((1, 2), (8, 16), (11025, 44100))]},</span>
+<span class="go">{&#39;@device_cm_...- HD Webcam C615)&#39;: &#39;Microphone (2- HD Webcam C615)&#39;,</span>
+<span class="go"> &#39;@device_cm_...2- HD Webcam C615)&#39;: &#39;Microphone (3- HD Webcam C615)&#39;,</span>
+<span class="gp">...</span>
+<span class="go"> &#39;@device_pnp...223196\global&#39;: &#39;HD Webcam C615&#39;,</span>
+<span class="go"> &#39;@device_pnp...223196\global&#39;: &#39;Laptop Integrated Webcam&#39;})</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="examples.html#dshow-example"><span class="std std-ref">Playing a webcam with DirectShow on windows</span></a> for a full example.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.encode_to_bytes">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">encode_to_bytes</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.encode_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the item and walks it recursively whether it’s a string, int, iterable,
+etc. and encodes all the strings to utf-8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>item</cite>: anything</dt><dd><p>The object to be walked and encoded.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An object identical to the <code class="docutils literal notranslate"><span class="pre">item</span></code>, but with all strings encoded to utf-8.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.decode_to_unicode">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">decode_to_unicode</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.decode_to_unicode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the item and walks it recursively whether it’s a string, int, iterable,
+etc. and encodes all the strings to utf-8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>item</cite>: anything</dt><dd><p>The object to be walked and encoded.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An object identical to the <code class="docutils literal notranslate"><span class="pre">item</span></code>, but with all strings encoded to utf-8.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffpyplayer.tools.convert_to_str">
+<code class="descclassname">ffpyplayer.tools.</code><code class="descname">convert_to_str</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="headerlink" href="#ffpyplayer.tools.convert_to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the item and walks it recursively whether it’s a string, int, iterable,
+etc. and encodes all the strings to utf-8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>item</cite>: anything</dt><dd><p>The object to be walked and encoded.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An object identical to the <code class="docutils literal notranslate"><span class="pre">item</span></code>, but with all strings encoded to utf-8.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="attribute">
+<dt id="ffpyplayer.tools.loglevels">
+<code class="descclassname">tools.</code><code class="descname">loglevels</code><em class="property"> = {'debug': 48, 'error': 16, 'fatal': 8, 'info': 32, 'panic': 0, 'quiet': -8, 'trace': 56, 'verbose': 40, 'warning': 24}</em><a class="headerlink" href="#ffpyplayer.tools.loglevels" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary with all the available ffmpeg log levels. The keys are the loglevels
+and the values are their ffmpeg values. The lower the value, the more important
+the log. Note, this is ooposite python where the higher the level the more important
+the log.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ffpyplayer.tools.codecs_enc">
+<code class="descclassname">tools.</code><code class="descname">codecs_enc</code><em class="property"> = ['a64multi', 'a64multi5', 'alias_pix', 'amv', 'apng', 'asv1', 'asv2', 'avrp', 'avui', 'ayuv', 'bmp', 'cinepak', 'cljr', 'dnxhd', 'dpx', 'dvvideo', 'ffv1', 'ffvhuff', 'fits', 'flashsv', 'flashsv2', 'flv', 'gif', 'h261', 'h263', 'h263p', 'h264_amf', 'h264_nvenc', 'h264_qsv', 'hap', 'hevc_amf', 'hevc_nvenc', 'hevc_qsv', 'huffyuv', 'jpeg2000', 'jpegls', 'libaom-av1', 'libopenjpeg', 'libtheora', 'libvpx', 'libvpx-vp9', 'libwebp', 'libx264', 'libx264rgb', 'libx265', 'libxvid', 'ljpeg', 'magicyuv', 'mjpeg', 'mjpeg_qsv', 'mpeg1video', 'mpeg2_qsv', 'mpeg2video', 'mpeg4', 'msmpeg4', 'msmpeg4v2', 'msvideo1', 'nvenc', 'nvenc_h264', 'nvenc_hevc', 'pam', 'pbm', 'pcx', 'pgm', 'pgmyuv', 'png', 'ppm', 'prores', 'prores_aw', 'prores_ks', 'qtrle', 'r10k', 'r210', 'rawvideo', 'roqvideo', 'rv10', 'rv20', 'sgi', 'snow', 'sunrast', 'svq1', 'targa', 'tiff', 'utvideo', 'v210', 'v308', 'v408', 'v410', 'vc2', 'wmv1', 'wmv2', 'wrapped_avframe', 'xbm', 'xface', 'xwd', 'y41p', 'yuv4', 'zlib', 'zmbv']</em><a class="headerlink" href="#ffpyplayer.tools.codecs_enc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the codecs available for encoding video.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ffpyplayer.tools.codecs_dec">
+<code class="descclassname">tools.</code><code class="descname">codecs_dec</code><em class="property"> = ['012v', '4xm', '8bps', '8svx_exp', '8svx_fib', 'aac', 'aac_fixed', 'aac_latm', 'aasc', 'ac3', 'ac3_fixed', 'adpcm_4xm', 'adpcm_adx', 'adpcm_afc', 'adpcm_agm', 'adpcm_aica', 'adpcm_ct', 'adpcm_dtk', 'adpcm_ea', 'adpcm_ea_maxis_xa', 'adpcm_ea_r1', 'adpcm_ea_r2', 'adpcm_ea_r3', 'adpcm_ea_xas', 'adpcm_ima_amv', 'adpcm_ima_apc', 'adpcm_ima_dat4', 'adpcm_ima_dk3', 'adpcm_ima_dk4', 'adpcm_ima_ea_eacs', 'adpcm_ima_ea_sead', 'adpcm_ima_iss', 'adpcm_ima_oki', 'adpcm_ima_qt', 'adpcm_ima_rad', 'adpcm_ima_smjpeg', 'adpcm_ima_wav', 'adpcm_ima_ws', 'adpcm_ms', 'adpcm_mtaf', 'adpcm_psx', 'adpcm_sbpro_2', 'adpcm_sbpro_3', 'adpcm_sbpro_4', 'adpcm_swf', 'adpcm_thp', 'adpcm_thp_le', 'adpcm_vima', 'adpcm_xa', 'adpcm_yamaha', 'agm', 'aic', 'alac', 'alias_pix', 'als', 'amrnb', 'amrwb', 'amv', 'anm', 'ansi', 'ape', 'apng', 'aptx', 'aptx_hd', 'arbc', 'asv1', 'asv2', 'atrac1', 'atrac3', 'atrac3al', 'atrac3plus', 'atrac3plusal', 'atrac9', 'aura', 'aura2', 'avrn', 'avrp', 'avs', 'avui', 'ayuv', 'bethsoftvid', 'bfi', 'binkaudio_dct', 'binkaudio_rdft', 'binkvideo', 'bintext', 'bitpacked', 'bmp', 'bmv_audio', 'bmv_video', 'brender_pix', 'c93', 'camstudio', 'camtasia', 'cavs', 'cdgraphics', 'cdxl', 'cfhd', 'cinepak', 'clearvideo', 'cljr', 'cllc', 'comfortnoise', 'cook', 'cpia', 'cyuv', 'dca', 'dds', 'dfa', 'dirac', 'dnxhd', 'dolby_e', 'dpx', 'dsd_lsbf', 'dsd_lsbf_planar', 'dsd_msbf', 'dsd_msbf_planar', 'dsicinaudio', 'dsicinvideo', 'dss_sp', 'dst', 'dvaudio', 'dvvideo', 'dxa', 'dxtory', 'dxv', 'eac3', 'eacmv', 'eamad', 'eatgq', 'eatgv', 'eatqi', 'escape124', 'escape130', 'evrc', 'exr', 'ffv1', 'ffvhuff', 'fic', 'fits', 'flac', 'flashsv', 'flashsv2', 'flic', 'flv', 'fmvc', 'fraps', 'frwu', 'g2m', 'g722', 'g723_1', 'g726', 'g726le', 'g729', 'gdv', 'gif', 'gremlin_dpcm', 'gsm', 'gsm_ms', 'h261', 'h263', 'h263i', 'h263p', 'h264', 'h264_cuvid', 'h264_qsv', 'hap', 'hcom', 'hevc', 'hevc_cuvid', 'hevc_qsv', 'hnm4video', 'hq_hqa', 'hqx', 'huffyuv', 'hymt', 'iac', 'idcinvideo', 'idf', 'iff', 'ilbc', 'imc', 'imm4', 'indeo2', 'indeo3', 'indeo4', 'indeo5', 'interplay_dpcm', 'interplayacm', 'interplayvideo', 'jpeg2000', 'jpegls', 'jv', 'kgv1', 'kmvc', 'lagarith', 'libaom-av1', 'libdav1d', 'libopencore_amrnb', 'libopencore_amrwb', 'libopenjpeg', 'libopus', 'libspeex', 'libvorbis', 'libvpx', 'libvpx-vp9', 'loco', 'm101', 'mace3', 'mace6', 'magicyuv', 'mdec', 'metasound', 'mimic', 'mjpeg', 'mjpeg_cuvid', 'mjpegb', 'mlp', 'mmvideo', 'motionpixels', 'mp1', 'mp1float', 'mp2', 'mp2float', 'mp3', 'mp3adu', 'mp3adufloat', 'mp3float', 'mp3on4', 'mp3on4float', 'mpc7', 'mpc8', 'mpeg1_cuvid', 'mpeg1video', 'mpeg2_cuvid', 'mpeg2_qsv', 'mpeg2video', 'mpeg4', 'mpeg4_cuvid', 'mpegvideo', 'msa1', 'mscc', 'msmpeg4', 'msmpeg4v1', 'msmpeg4v2', 'msrle', 'mss1', 'mss2', 'msvideo1', 'mszh', 'mts2', 'mvc1', 'mvc2', 'mwsc', 'mxpeg', 'nellymoser', 'nuv', 'on2avc', 'opus', 'paf_audio', 'paf_video', 'pam', 'pbm', 'pcm_alaw', 'pcm_bluray', 'pcm_dvd', 'pcm_f16le', 'pcm_f24le', 'pcm_f32be', 'pcm_f32le', 'pcm_f64be', 'pcm_f64le', 'pcm_lxf', 'pcm_mulaw', 'pcm_s16be', 'pcm_s16be_planar', 'pcm_s16le', 'pcm_s16le_planar', 'pcm_s24be', 'pcm_s24daud', 'pcm_s24le', 'pcm_s24le_planar', 'pcm_s32be', 'pcm_s32le', 'pcm_s32le_planar', 'pcm_s64be', 'pcm_s64le', 'pcm_s8', 'pcm_s8_planar', 'pcm_u16be', 'pcm_u16le', 'pcm_u24be', 'pcm_u24le', 'pcm_u32be', 'pcm_u32le', 'pcm_u8', 'pcm_vidc', 'pcm_zork', 'pcx', 'pgm', 'pgmyuv', 'pictor', 'pixlet', 'png', 'ppm', 'prores', 'prosumer', 'psd', 'ptx', 'qcelp', 'qdm2', 'qdmc', 'qdraw', 'qpeg', 'qtrle', 'r10k', 'r210', 'ralf', 'rasc', 'rawvideo', 'real_144', 'real_288', 'rl2', 'roq_dpcm', 'roqvideo', 'rpza', 'rscc', 'rv10', 'rv20', 'rv30', 'rv40', 's302m', 'sanm', 'sbc', 'scpr', 'screenpresso', 'sdx2_dpcm', 'sgi', 'sgirle', 'sheervideo', 'shorten', 'sipr', 'smackaud', 'smackvid', 'smc', 'smvjpeg', 'snow', 'sol_dpcm', 'sonic', 'sp5x', 'speedhq', 'srgc', 'sunrast', 'svq1', 'svq3', 'tak', 'targa', 'targa_y216', 'tdsc', 'theora', 'thp', 'tiertexseqvideo', 'tiff', 'tmv', 'truehd', 'truemotion1', 'truemotion2', 'truemotion2rt', 'truespeech', 'tscc2', 'tta', 'twinvq', 'txd', 'ultimotion', 'utvideo', 'v210', 'v210x', 'v308', 'v408', 'v410', 'vb', 'vble', 'vc1', 'vc1_cuvid', 'vc1_qsv', 'vc1image', 'vcr1', 'vmdaudio', 'vmdvideo', 'vmnc', 'vorbis', 'vp3', 'vp5', 'vp6', 'vp6a', 'vp6f', 'vp7', 'vp8', 'vp8_cuvid', 'vp8_qsv', 'vp9', 'vp9_cuvid', 'vqavideo', 'wavesynth', 'wavpack', 'wcmv', 'webp', 'wmalossless', 'wmapro', 'wmav1', 'wmav2', 'wmavoice', 'wmv1', 'wmv2', 'wmv3', 'wmv3image', 'wnv1', 'wrapped_avframe', 'ws_snd1', 'xan_dpcm', 'xan_wc3', 'xan_wc4', 'xbin', 'xbm', 'xface', 'xl', 'xma1', 'xma2', 'xpm', 'xwd', 'y41p', 'ylc', 'yop', 'yuv4', 'zerocodec', 'zlib', 'zmbv']</em><a class="headerlink" href="#ffpyplayer.tools.codecs_dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the codecs available for decoding video and audio.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ffpyplayer.tools.pix_fmts">
+<code class="descclassname">tools.</code><code class="descname">pix_fmts</code><em class="property"> = ['0bgr', '0rgb', 'abgr', 'argb', 'ayuv64be', 'ayuv64le', 'bayer_bggr16be', 'bayer_bggr16le', 'bayer_bggr8', 'bayer_gbrg16be', 'bayer_gbrg16le', 'bayer_gbrg8', 'bayer_grbg16be', 'bayer_grbg16le', 'bayer_grbg8', 'bayer_rggb16be', 'bayer_rggb16le', 'bayer_rggb8', 'bgr0', 'bgr24', 'bgr4', 'bgr444be', 'bgr444le', 'bgr48be', 'bgr48le', 'bgr4_byte', 'bgr555be', 'bgr555le', 'bgr565be', 'bgr565le', 'bgr8', 'bgra', 'bgra64be', 'bgra64le', 'cuda', 'd3d11', 'd3d11va_vld', 'drm_prime', 'dxva2_vld', 'gbrap', 'gbrap10be', 'gbrap10le', 'gbrap12be', 'gbrap12le', 'gbrap16be', 'gbrap16le', 'gbrapf32be', 'gbrapf32le', 'gbrp', 'gbrp10be', 'gbrp10le', 'gbrp12be', 'gbrp12le', 'gbrp14be', 'gbrp14le', 'gbrp16be', 'gbrp16le', 'gbrp9be', 'gbrp9le', 'gbrpf32be', 'gbrpf32le', 'gray', 'gray10be', 'gray10le', 'gray12be', 'gray12le', 'gray14be', 'gray14le', 'gray16be', 'gray16le', 'gray9be', 'gray9le', 'grayf32be', 'grayf32le', 'mediacodec', 'mmal', 'monob', 'monow', 'nv12', 'nv16', 'nv20be', 'nv20le', 'nv21', 'opencl', 'p010be', 'p010le', 'p016be', 'p016le', 'pal8', 'qsv', 'rgb0', 'rgb24', 'rgb4', 'rgb444be', 'rgb444le', 'rgb48be', 'rgb48le', 'rgb4_byte', 'rgb555be', 'rgb555le', 'rgb565be', 'rgb565le', 'rgb8', 'rgba', 'rgba64be', 'rgba64le', 'uyvy422', 'uyyvyy411', 'vaapi_idct', 'vaapi_moco', 'vaapi_vld', 'vdpau', 'videotoolbox_vld', 'xvmc', 'xyz12be', 'xyz12le', 'ya16be', 'ya16le', 'ya8', 'yuv410p', 'yuv411p', 'yuv420p', 'yuv420p10be', 'yuv420p10le', 'yuv420p12be', 'yuv420p12le', 'yuv420p14be', 'yuv420p14le', 'yuv420p16be', 'yuv420p16le', 'yuv420p9be', 'yuv420p9le', 'yuv422p', 'yuv422p10be', 'yuv422p10le', 'yuv422p12be', 'yuv422p12le', 'yuv422p14be', 'yuv422p14le', 'yuv422p16be', 'yuv422p16le', 'yuv422p9be', 'yuv422p9le', 'yuv440p', 'yuv440p10be', 'yuv440p10le', 'yuv440p12be', 'yuv440p12le', 'yuv444p', 'yuv444p10be', 'yuv444p10le', 'yuv444p12be', 'yuv444p12le', 'yuv444p14be', 'yuv444p14le', 'yuv444p16be', 'yuv444p16le', 'yuv444p9be', 'yuv444p9le', 'yuva420p', 'yuva420p10be', 'yuva420p10le', 'yuva420p16be', 'yuva420p16le', 'yuva420p9be', 'yuva420p9le', 'yuva422p', 'yuva422p10be', 'yuva422p10le', 'yuva422p12be', 'yuva422p12le', 'yuva422p16be', 'yuva422p16le', 'yuva422p9be', 'yuva422p9le', 'yuva444p', 'yuva444p10be', 'yuva444p10le', 'yuva444p12be', 'yuva444p12le', 'yuva444p16be', 'yuva444p16le', 'yuva444p9be', 'yuva444p9le', 'yuvj411p', 'yuvj420p', 'yuvj422p', 'yuvj440p', 'yuvj444p', 'yuyv422', 'yvyu422']</em><a class="headerlink" href="#ffpyplayer.tools.pix_fmts" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the pixel formats available to ffmpeg.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ffpyplayer.tools.formats_in">
+<code class="descclassname">tools.</code><code class="descname">formats_in</code><em class="property"> = ['3dostr', '3g2', '3gp', '4xm', 'aa', 'aac', 'ac3', 'acm', 'act', 'adf', 'adp', 'ads', 'adx', 'aea', 'afc', 'aiff', 'aix', 'alaw', 'alias_pix', 'amr', 'amrnb', 'amrwb', 'anm', 'apc', 'ape', 'apng', 'applehttp', 'aptx', 'aptx_hd', 'aqtitle', 'asf', 'asf_o', 'ass', 'ast', 'au', 'avi', 'avisynth', 'avr', 'avs', 'avs2', 'bethsoftvid', 'bfi', 'bfstm', 'bin', 'bink', 'bit', 'bmp_pipe', 'bmv', 'boa', 'brender_pix', 'brstm', 'c93', 'caf', 'cavsvideo', 'cdg', 'cdxl', 'cine', 'codec2', 'codec2raw', 'concat', 'dash', 'data', 'daud', 'dcstr', 'dds_pipe', 'dfa', 'dhav', 'dirac', 'dnxhd', 'dpx_pipe', 'dsf', 'dshow', 'dsicin', 'dss', 'dts', 'dtshd', 'dv', 'dvbsub', 'dvbtxt', 'dxa', 'ea', 'ea_cdata', 'eac3', 'epaf', 'exr_pipe', 'f32be', 'f32le', 'f64be', 'f64le', 'ffmetadata', 'film_cpk', 'filmstrip', 'fits', 'flac', 'flic', 'flv', 'frm', 'fsb', 'g722', 'g723_1', 'g726', 'g726le', 'g729', 'gdigrab', 'gdv', 'genh', 'gif', 'gif_pipe', 'gsm', 'gxf', 'h261', 'h263', 'h264', 'hcom', 'hevc', 'hls', 'hnm', 'ico', 'idcin', 'idf', 'iff', 'ilbc', 'image2', 'image2pipe', 'ingenient', 'ipmovie', 'ircam', 'iss', 'iv8', 'ivf', 'ivr', 'j2k_pipe', 'jacosub', 'jpeg_pipe', 'jpegls_pipe', 'jv', 'kux', 'lavfi', 'libopenmpt', 'live_flv', 'lmlm4', 'loas', 'lrc', 'lvf', 'lxf', 'm4a', 'm4v', 'matroska', 'mgsts', 'microdvd', 'mj2', 'mjpeg', 'mjpeg_2000', 'mlp', 'mlv', 'mm', 'mmf', 'mov', 'mp3', 'mp4', 'mpc', 'mpc8', 'mpeg', 'mpegts', 'mpegtsraw', 'mpegvideo', 'mpjpeg', 'mpl2', 'mpsub', 'msf', 'msnwctcp', 'mtaf', 'mtv', 'mulaw', 'musx', 'mv', 'mvi', 'mxf', 'mxg', 'nc', 'nistsphere', 'nsp', 'nsv', 'nut', 'nuv', 'ogg', 'oma', 'paf', 'pam_pipe', 'pbm_pipe', 'pcx_pipe', 'pgm_pipe', 'pgmyuv_pipe', 'pictor_pipe', 'pjs', 'pmp', 'png_pipe', 'ppm_pipe', 'psd_pipe', 'psxstr', 'pva', 'pvf', 'qcp', 'qdraw_pipe', 'r3d', 'rawvideo', 'realtext', 'redspark', 'rl2', 'rm', 'roq', 'rpl', 'rsd', 'rso', 'rtp', 'rtsp', 's16be', 's16le', 's24be', 's24le', 's32be', 's32le', 's337m', 's8', 'sami', 'sap', 'sbc', 'sbg', 'scc', 'sdp', 'sdr2', 'sds', 'sdx', 'ser', 'sgi_pipe', 'shn', 'siff', 'sln', 'smjpeg', 'smk', 'smush', 'sol', 'sox', 'spdif', 'srt', 'stl', 'subviewer', 'subviewer1', 'sunrast_pipe', 'sup', 'svag', 'svg_pipe', 'swf', 'tak', 'tedcaptions', 'thp', 'tiertexseq', 'tiff_pipe', 'tmv', 'truehd', 'tta', 'tty', 'txd', 'ty', 'u16be', 'u16le', 'u24be', 'u24le', 'u32be', 'u32le', 'u8', 'v210', 'v210x', 'vag', 'vc1', 'vc1test', 'vfwcap', 'vidc', 'vividas', 'vivo', 'vmd', 'vobsub', 'voc', 'vpk', 'vplayer', 'vqf', 'w64', 'wav', 'wc3movie', 'webm', 'webm_dash_manifest', 'webp_pipe', 'webvtt', 'wsaud', 'wsd', 'wsvqa', 'wtv', 'wv', 'wve', 'xa', 'xbin', 'xmv', 'xpm_pipe', 'xvag', 'xwd_pipe', 'xwma', 'yop', 'yuv4mpegpipe']</em><a class="headerlink" href="#ffpyplayer.tools.formats_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the formats (e.g. file formats) available for reading.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ffpyplayer.tools.formats_out">
+<code class="descclassname">tools.</code><code class="descname">formats_out</code><em class="property"> = ['3g2', '3gp', 'a64', 'ac3', 'adts', 'adx', 'aiff', 'alaw', 'amr', 'apng', 'aptx', 'aptx_hd', 'asf', 'asf_stream', 'ass', 'ast', 'au', 'avi', 'avm2', 'avs2', 'bit', 'caf', 'cavsvideo', 'codec2', 'codec2raw', 'crc', 'dash', 'data', 'daud', 'dirac', 'dnxhd', 'dts', 'dv', 'dvd', 'eac3', 'f32be', 'f32le', 'f4v', 'f64be', 'f64le', 'ffmetadata', 'fifo', 'fifo_test', 'film_cpk', 'filmstrip', 'fits', 'flac', 'flv', 'framecrc', 'framehash', 'framemd5', 'g722', 'g723_1', 'g726', 'g726le', 'gif', 'gsm', 'gxf', 'h261', 'h263', 'h264', 'hash', 'hds', 'hevc', 'hls', 'ico', 'ilbc', 'image2', 'image2pipe', 'ipod', 'ircam', 'ismv', 'ivf', 'jacosub', 'latm', 'lrc', 'm4v', 'matroska', 'matroska', 'md5', 'microdvd', 'mjpeg', 'mkvtimestamp_v2', 'mlp', 'mmf', 'mov', 'mp2', 'mp3', 'mp4', 'mpeg', 'mpeg1video', 'mpeg2video', 'mpegts', 'mpjpeg', 'mulaw', 'mxf', 'mxf_d10', 'mxf_opatom', 'null', 'nut', 'oga', 'ogg', 'ogv', 'oma', 'opus', 'psp', 'rawvideo', 'rm', 'roq', 'rso', 'rtp', 'rtp_mpegts', 'rtsp', 's16be', 's16le', 's24be', 's24le', 's32be', 's32le', 's8', 'sap', 'sbc', 'scc', 'sdl', 'sdl2', 'segment', 'singlejpeg', 'smjpeg', 'smoothstreaming', 'sox', 'spdif', 'spx', 'srt', 'ssegment', 'stream_segment', 'sup', 'svcd', 'swf', 'tee', 'truehd', 'tta', 'u16be', 'u16le', 'u24be', 'u24le', 'u32be', 'u32le', 'u8', 'uncodedframecrc', 'vc1', 'vc1test', 'vcd', 'vidc', 'vob', 'voc', 'w64', 'wav', 'webm', 'webm_chunk', 'webm_dash_manifest', 'webp', 'webvtt', 'wtv', 'wv', 'yuv4mpegpipe']</em><a class="headerlink" href="#ffpyplayer.tools.formats_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the formats (e.g. file formats) available for writing.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">FFPyPlayer</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=matham&repo=ffpyplayer&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">The FFPyPlayer API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="player.html">Player</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writer.html">Writer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pic.html">Images</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tools</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">The FFPyPlayer API</a><ul>
+      <li>Previous: <a href="pic.html" title="previous chapter">Images</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tools.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/tools.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/matham/ffpyplayer" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
